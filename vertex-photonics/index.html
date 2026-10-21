@@ -42,7 +42,7 @@
   --t-micro: 0.8125rem;
   --gl: max(clamp(20px, 4.2vw, 56px), env(safe-area-inset-left, 0px));
   --gr: max(clamp(20px, 4.2vw, 56px), env(safe-area-inset-right, 0px));
-  --maxw: 1320px;
+  --maxw: clamp(1320px, 66.667vw + 360px, 1800px);
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ring: var(--frost);
@@ -53,6 +53,7 @@
   --section-y: clamp(104px, 15vh, 176px);
   color-scheme: dark;
 }
+@media (max-width: 759px) { :root { --section-y: 84px; } }
 
 [hidden] { display: none !important; }
 *, *::before, *::after { box-sizing: border-box; }
@@ -240,7 +241,9 @@ main { position: relative; z-index: 1; }
 }
 /* the subline stays a quiet second voice under the headline */
 .hero .lede { color: var(--frost-2); font-size: clamp(1rem, 0.95rem + 0.2vw, 1.125rem); line-height: 1.55; max-width: 30em; }
-.hero-facts { display: flex; flex-wrap: wrap; gap: 14px clamp(40px, 5vw, 76px); padding-top: 22px; border-top: 1px solid var(--line-d); max-width: 760px; }
+.hero-facts { display: flex; flex-wrap: wrap; gap: 14px clamp(40px, 5vw, 76px); padding-top: 22px; max-width: 760px; }
+/* the facts sit lowest, where the device's fiber sweeps first: they go a little ahead of the rest */
+.hero-facts { opacity: calc(1 - min(1, var(--hero-out, 0) * 1.6)); }
 .hero-facts div { display: grid; gap: 2px; }
 .hero-facts dt { font-size: var(--t-micro); color: var(--mist); font-stretch: 96%; }
 .hero-facts dd { font-size: 1rem; font-weight: 560; font-stretch: 106%; }
@@ -264,11 +267,13 @@ main { position: relative; z-index: 1; }
    level once the screen is shown */
 .levels-fig { grid-column: 2; margin: 48px 0 0; }
 .lv-row { display: grid; grid-template-columns: 158px minmax(0, 1fr); align-items: center; gap: 18px; padding: 12px 0; border-top: 1px solid var(--line-d); }
+.lv-row:first-of-type { border-top: 0; }
 .lv-row:last-of-type { border-bottom: 1px solid var(--line-d); }
 .lv-label { font-size: var(--t-small); color: var(--mist); white-space: nowrap; }
 .lv-after .lv-label { color: var(--frost); }
-.lv-bars { position: relative; height: 46px; display: flex; align-items: flex-end; justify-content: space-between; padding: 0 4px; }
-.lv-bars i { width: 3px; height: 100%; border-radius: 1.5px; background: var(--c); box-shadow: 0 0 6px color-mix(in srgb, var(--c) 65%, transparent); transform-origin: 50% 100%; transform: scaleY(var(--h)); }
+/* the channels sit close together on the right, as one spectrum */
+.lv-bars { position: relative; justify-self: end; width: 100%; max-width: calc(16 * 4px + 15 * 13px + 8px); height: 64px; display: flex; align-items: flex-end; justify-content: space-between; padding: 0 4px; }
+.lv-bars i { width: 4px; height: 100%; border-radius: 2px; background: var(--c); box-shadow: 0 0 6px color-mix(in srgb, var(--c) 65%, transparent); transform-origin: 50% 100%; transform: scaleY(var(--h)); }
 .lv-after .lv-bars::before { content: ""; position: absolute; left: 0; right: 0; bottom: 45%; border-top: 1px dashed rgba(232, 236, 243, 0.3); }
 .js .lv-after .lv-bars i { transform: scaleY(var(--h0, var(--h))); }
 .js .lv-after .lv-bars::before { opacity: 0; }
@@ -282,6 +287,7 @@ main { position: relative; z-index: 1; }
   .why-copy p { line-height: 1.5; }
   .levels-fig { margin-top: 28px; }
   .lv-row { padding: 8px 0; }
+  .lv-bars { height: 52px; }
   .lv-bars { height: 34px; }
 }
 /* the text arrives once the model has reached its place; without script it is simply there */
@@ -373,9 +379,9 @@ main { position: relative; z-index: 1; }
 /* stacked for narrow, short or portrait screens: the chip in a clear band above, the words below */
 @media (max-width: 899px), (max-height: 640px), (max-aspect-ratio: 17/20) {
   .chip { height: auto; }
-  .chip-pin { position: relative; height: auto; display: block; overflow: visible; padding-top: 75vh; padding-bottom: 72px; }
+  .chip-pin { position: relative; height: auto; display: block; overflow: visible; padding-top: 50vh; padding-bottom: 72px; }
   .chip-inner { padding-top: 72px; background: linear-gradient(180deg, rgba(6, 8, 16, 0) 0, rgba(6, 8, 16, 0.94) 64px, var(--night) 120px); }
-  .stage-chip { width: 100%; height: 75vh; }
+  .stage-chip { width: 100%; height: 50vh; }
   .chip-copy { max-width: 620px; }
   .chip-tags { display: none; }
   .chip .step { opacity: 0.55; }
@@ -421,7 +427,7 @@ main { position: relative; z-index: 1; }
 .tick.last { translate: -100% 0; }
 .tick.last::before { left: auto; right: 0; }
 .marks { position: absolute; inset: 0; }
-.mark { position: absolute; left: var(--x); bottom: 120px; height: calc(32px + var(--row) * 44px); display: flex; align-items: flex-start; }
+.mark { position: absolute; left: var(--x); bottom: 120px; height: calc(48px + var(--row) * 46px + var(--lift, 0px)); display: flex; align-items: flex-start; }
 .mark::before { content: ""; position: absolute; left: -0.5px; bottom: 0; top: 18px; width: 1px; background: rgba(214, 224, 245, 0.32); }
 .mark button { position: relative; translate: -5.5px 0; display: inline-flex; align-items: center; gap: 8px; padding: 2px 8px 2px 0; background: none; border: 0; cursor: pointer; color: var(--mist); font-size: var(--t-small); font-weight: 520; white-space: nowrap; transition: color 0.2s; }
 .mark button::before { content: ""; width: 11px; height: 11px; border-radius: 50%; border: 1px solid currentColor; background: var(--night); flex: none; transition: background-color 0.2s, transform 0.18s var(--ease-out); }
@@ -471,7 +477,8 @@ main { position: relative; z-index: 1; }
 .nw { white-space: nowrap; }
 .products .sec-head p { font-size: var(--t-body); line-height: 1.62; color: var(--frost-2); }
 .products .sec-head .btn { justify-self: start; }
-.prod-list { display: grid; }
+/* on large screens the list grows slower than the page, and the extra room goes between the heading and the list */
+.prod-list { display: grid; justify-self: end; width: 100%; max-width: min(100%, calc(15vw + 562px), 900px); }
 .prod { display: grid; grid-template-columns: 148px minmax(0, 1fr) auto; gap: 10px 32px; align-items: start; padding: 30px 0; }
 .prod + .prod { margin-top: 8px; }
 .prod-curve { grid-row: span 2; padding-top: 4px; }
@@ -688,12 +695,13 @@ main { position: relative; z-index: 1; }
   .hero::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(0deg, rgba(6, 8, 16, 0) 0, rgba(6, 8, 16, 0.9) clamp(40px, 7vh, 88px), rgba(6, 8, 16, 0.75) 42%, rgba(6, 8, 16, 0) 62%); }
   .hero-inner { padding-top: 54svh; gap: 28px; }
   .stage-hero { width: 100%; height: 56%; }
-  .why-pin { align-items: flex-end; padding-top: 44svh; }
+  .why-pin { align-items: flex-end; padding-top: 40svh; }
   .why::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(0deg, rgba(6, 8, 16, 0) 0, rgba(6, 8, 16, 0.9) 96px, rgba(6, 8, 16, 0.8) 60%, rgba(6, 8, 16, 0) 82%); }
   .why-inner { grid-template-columns: minmax(0, 1fr); }
   .why-copy, .levels-fig { grid-column: 1; }
-  .stage-why { width: 100%; height: 44svh; }
+  .stage-why { width: 100%; height: 40svh; }
   .lv-row { grid-template-columns: minmax(0, 7.5em) minmax(0, 1fr); gap: 12px; }
+  .lv-bars { height: 56px; max-width: calc(16 * 4px + 15 * 9px + 8px); }
   .lv-label { font-size: var(--t-micro); white-space: normal; line-height: 1.35; }
 }
 
@@ -733,6 +741,25 @@ main { position: relative; z-index: 1; }
   .step { opacity: 1; }
   .nav a { opacity: 1; }
   .seg { border-color: rgba(232, 236, 243, 0.8); }
+}
+
+/* ---------- phones: one rhythm between sections ----------
+   From the last line of one section to the first of the next is the same everywhere on a phone (about 176 px of
+   clear space, the gap under the chip); where a dark section meets a light one there is a little more (about 208 px).
+   Each padding below is set so the visible gap, not the box, comes out at that size. */
+@media (max-width: 759px) {
+  /* the band holds the chip, its heading close under it: the chip and its words are one block */
+  .chip .chip-pin { padding-top: calc(39.2vh - 4px); padding-bottom: 84px; }
+  .stage-chip { height: calc(39.2vh - 4px); }
+  /* the chip below sits a set share of the screen into its band, so this space shrinks as the screen gets taller */
+  .why-pin { padding-bottom: max(24px, calc(169px - 13.35vh)); }
+  .products { padding-block: 84px 59px; }
+  .spectrum { padding-block: 84px 98px; }
+  .mfg { padding-block: 104px 82px; }
+  .process .flow-pin { padding-block: 84px 68px; }
+  .careers { padding-block: 86px 103px; }
+  .contact { padding-block: 102px 80px; }
+  .site-footer { padding-top: 84px; }
 }
 
 </style>
@@ -970,8 +997,8 @@ main { position: relative; z-index: 1; }
             <div class="mark later" style="--x:14.16%;--row:1"><button type="button" data-from="365" data-to="365" data-band="365 nm, ultraviolet" data-status="roadmap" data-title="UV curing and inspection" data-text="Curing, sterilization and inspection systems use bandpass filters to keep only the active ultraviolet line.">UV curing</button></div>
             <div class="mark later" style="--x:22.94%;--row:0"><button type="button" data-from="520" data-to="540" data-band="Around 530 nm, visible" data-status="roadmap" data-title="Fluorescence imaging" data-text="Microscopes and life-science instruments separate excitation light from the much weaker emission light.">Fluorescence</button></div>
             <div class="mark later" style="--x:35.55%;--row:1"><button type="button" data-from="905" data-to="940" data-band="905 and 940 nm, near infrared" data-status="roadmap" data-title="LiDAR and 3D sensing" data-text="Narrow bandpass filters keep the laser return and block sunlight, so sensors see further and more reliably.">LiDAR</button></div>
-            <div class="mark" style="--x:44.225%;--row:3"><button type="button" aria-pressed="false" data-from="1260" data-to="1360" data-band="1260–1360 nm, O-band" data-status="now" data-title="AI data center optics" data-text="Wavelength filters that put four or eight channels on one fiber inside 800G and 1.6T transceivers.">Data center optics</button></div>
-            <div class="mark" data-home style="--x:48.16%;--row:2"><button type="button" aria-pressed="true" data-from="1530" data-to="1565" data-band="1530–1565 nm, C-band" data-status="now" data-title="Telecom and data center interconnect" data-text="Long-haul, metro and data center interconnect links carry dozens of channels on each fiber and amplify them every 50 to 100 km. Our gain flattening filters keep every channel at the same power after each amplifier.">Telecom and DCI</button></div>
+            <div class="mark" style="--x:44.225%;--row:2;--lift:24px"><button type="button" aria-pressed="false" data-from="1260" data-to="1360" data-band="1260–1360 nm, O-band" data-status="now" data-title="AI data center optics" data-text="Wavelength filters that put four or eight channels on one fiber inside 800G and 1.6T transceivers.">Data center optics</button></div>
+            <div class="mark" data-home style="--x:48.16%;--row:1"><button type="button" aria-pressed="true" data-from="1530" data-to="1565" data-band="1530–1565 nm, C-band" data-status="now" data-title="Telecom and data center interconnect" data-text="Long-haul, metro and data center interconnect links carry dozens of channels on each fiber and amplify them every 50 to 100 km. Our gain flattening filters keep every channel at the same power after each amplifier.">Telecom and DCI</button></div>
             <div class="mark later" style="--x:71.99%;--row:1"><button type="button" data-from="4200" data-to="4360" data-band="Around 4.3 µm, mid-wave infrared" data-status="roadmap" data-title="Gas sensing" data-text="Detectors pick out the absorption line of one molecule, such as carbon dioxide, and ignore the rest.">Gas sensing</button></div>
             <div class="mark flip later" style="--x:92.08%;--row:0"><button type="button" data-from="8000" data-to="14000" data-band="8–14 µm, long-wave infrared" data-status="roadmap" data-title="Thermal imaging" data-text="Thermal cameras pass the heat radiation objects give off and block everything else.">Thermal imaging</button></div>
           </div>
@@ -1360,7 +1387,8 @@ main { position: relative; z-index: 1; }
   let heroOut = -1;
   function updateHero() {
     const vh = window.innerHeight;
-    const out = wideLayout.matches ? clamp((window.scrollY - vh * 0.2) / (vh * 0.42), 0, 1) : 0;
+    // the text is gone within the first quarter screen of scrolling, before the turning device reaches it
+    const out = wideLayout.matches ? clamp((window.scrollY - vh * 0.04) / (vh * 0.26), 0, 1) : 0;
     if (Math.abs(out - heroOut) > 0.001) { heroOut = out; hero.style.setProperty('--hero-out', out.toFixed(3)); }
   }
 
@@ -1797,6 +1825,10 @@ const shared = {
   uPulseMul: { value: reduceMotion ? 0 : 1 },
   uReach: { value: 1 },        // how far the outgoing light runs, as a share of its length
   uReachIn: { value: 1 },      // how far back the incoming light shows, as a share of its length
+  uFibIn: { value: 1 },        // the same for the fibers themselves, so a pose can let them fade out early
+  uFibOut: { value: 1 },
+  // light fades out just under the menu, so a fiber that runs off the top never crosses the menu's words
+  uViewH: { value: 1000 }, uTopCut: { value: 60 }, uTopFade: { value: 48 },
 };
 
 const BEAM_VS = /* glsl */`
@@ -1808,7 +1840,7 @@ const BEAM_VS = /* glsl */`
     gl_Position = projectionMatrix * mv;
   }`;
 const BEAM_FS = /* glsl */`
-  uniform float uTime, uFront, uS0, uLen, uCore, uPulse, uPulseMul, uFreq, uSeed, uFadeA, uFadeB, uGain, uMaster, uReach, uReachIn;
+  uniform float uTime, uFront, uS0, uLen, uCore, uPulse, uPulseMul, uFreq, uSeed, uFadeA, uFadeB, uGain, uMaster, uReach, uReachIn, uPw, uRise, uViewH, uTopCut, uTopFade;
   uniform vec3 uColor;
   varying vec2 vUv; varying vec3 vN; varying vec3 vV;
   void main() {
@@ -1820,11 +1852,12 @@ const BEAM_FS = /* glsl */`
     if (uReach < 0.999) ends *= 1.0 - smoothstep(uReach * 0.55, uReach, vUv.x);
     if (uReachIn < 0.999) ends *= smoothstep(1.0 - uReachIn, 1.0 - uReachIn * 0.55, vUv.x);
     float ph = fract(s * uFreq - uTime * 1.1 + uSeed);
-    float pulse = smoothstep(0.0, 0.025, ph) * (1.0 - smoothstep(0.025, 0.2, ph));
+    float pulse = smoothstep(0.0, uRise, ph) * (1.0 - smoothstep(uRise, uPw, ph));
     float nl = length(vN); vec3 N = nl > 1e-6 ? vN / nl : vec3(0.0, 0.0, 1.0);
     float facing = clamp(abs(dot(N, normalize(vV))), 0.0, 1.0);
     float profile = pow(max(facing, 1e-4), 1.7);
-    float a = (uCore + uPulse * uPulseMul * pulse) * profile * reveal * ends * uGain * uMaster;
+    float under = smoothstep(uTopCut, uTopCut + uTopFade, uViewH - gl_FragCoord.y);
+    float a = (uCore + uPulse * uPulseMul * pulse) * profile * reveal * ends * under * uGain * uMaster;
     gl_FragColor = vec4(uColor * a, a);
   }`;
 
@@ -1832,15 +1865,16 @@ function beamMaterial(color, s0, len, o = {}) {
   return new THREE.ShaderMaterial({
     uniforms: {
       uTime: shared.uTime, uFront: shared.uFront, uPulseMul: shared.uPulseMul,
+      uViewH: shared.uViewH, uTopCut: shared.uTopCut, uTopFade: shared.uTopFade,
       uMaster: o.trail ? shared.uMasterTrail : shared.uMasterCore,
       uColor: { value: new THREE.Color(color) },
       uS0: { value: s0 }, uLen: { value: len },
       uCore: { value: o.core ?? 0.6 }, uPulse: { value: o.pulse ?? 1.8 },
       uFreq: { value: o.freq ?? 0.16 }, uSeed: { value: o.seed ?? Math.random() },
       uFadeA: { value: o.fadeA ?? 0 }, uFadeB: { value: o.fadeB ?? 0 },
-      uGain: { value: o.gain ?? 1 },
-      uReach: o.reach ? shared.uReach : { value: 1 },
-      uReachIn: o.reachIn ? shared.uReachIn : { value: 1 },
+      uGain: { value: o.gain ?? 1 }, uPw: { value: o.pw ?? 0.2 }, uRise: { value: o.rise ?? 0.025 },
+      uReach: o.reach ? shared.uReach : o.fibOut ? shared.uFibOut : { value: 1 },
+      uReachIn: o.reachIn ? shared.uReachIn : o.fibIn ? shared.uFibIn : { value: 1 },
     },
     vertexShader: BEAM_VS,
     fragmentShader: BEAM_FS,
@@ -1858,6 +1892,12 @@ const CHIP_TILT = 0.14;         // set a few degrees off square, so no reflectio
 const LANES = 8, LANE_GAP = 0.06;
 const ROLL = -0.2;              // the axis runs a little downhill, the way the light travels
 const PIG = 2.4;                // fiber pigtail beyond each end of the tube
+const FIB_EXT = 6;              // past the pigtails the fibers run on, off the screen: the light stays in the fiber
+// No fan of colors at a fiber's end: light leaves a fiber as one narrow cone with every channel in it, and a gain
+// flattening filter does not split light by wavelength. The channels show as colored pulses inside the fibers.
+// (FANS = true with FIB_EXT = 0 brings back the earlier fans.)
+const FANS = false;
+const PULSE_SEED = 0.3;          // one phase for the light in the fibers and in the lanes: a pulse carries every channel
 // eight channels across the C-band, shortest wavelength first (colors are illustrative)
 const CH = ['#5a8bff', '#25b9ff', '#22d0c8', '#23d6a8', '#93e04c', '#f7cf3a', '#ffae3a', '#ff7a3c'];
 const GFF_TINT = '#2bd4bd';
@@ -1979,20 +2019,36 @@ function buildModel() {
   const xJ = GAP + LENS_L, xF = GAP + LENS_L + FER_L, xT = TUBE_L / 2;
   const laneY = (i) => (i - (LANES - 1) / 2) * LANE_GAP;
   const mix = mixColor(CH);
-  // the fiber: from the far end of the input pigtail into the ferrule, up to the lens
-  const inPath = new THREE.CatmullRomCurve3([
-    V3(-xT - PIG * 0.82, PIG * 0.4), V3(-xT - PIG * 0.4, PIG * 0.1), V3(-xT - 0.15, 0.01), V3(-xF, 0), V3(-xJ, 0),
-  ], false, 'centripetal');
-  const outPath = new THREE.CatmullRomCurve3([
-    V3(xJ, 0), V3(xF, 0), V3(xT + 0.15, -0.01), V3(xT + PIG * 0.4, -PIG * 0.1), V3(xT + PIG * 0.82, -PIG * 0.4),
-  ], false, 'centripetal');
+  // the fiber: from far off the screen, along the input pigtail into the ferrule, up to the lens; and out again
+  const pinIn = [V3(-xT - PIG * 0.82, PIG * 0.4), V3(-xT - PIG * 0.4, PIG * 0.1), V3(-xT - 0.15, 0.01), V3(-xF, 0), V3(-xJ, 0)];
+  const pinOut = [V3(xJ, 0), V3(xF, 0), V3(xT + 0.15, -0.01), V3(xT + PIG * 0.4, -PIG * 0.1), V3(xT + PIG * 0.82, -PIG * 0.4)];
+  const runOn = (end, prev) => FIB_EXT > 0
+    ? [0.4, 1].map((k) => end.clone().addScaledVector(end.clone().sub(prev).normalize(), FIB_EXT * k)) : [];
+  const inPath = new THREE.CatmullRomCurve3([...runOn(pinIn[0], pinIn[1]).reverse(), ...pinIn], false, 'centripetal');
+  const outPath = new THREE.CatmullRomCurve3([...pinOut, ...runOn(pinOut[4], pinOut[3])], false, 'centripetal');
   const lenIn = inPath.getLength(), lenOut = outPath.getLength();
-  const coreIn = new THREE.Mesh(tube(inPath, 0.02, 80, 8), beamMaterial(mix, 0, lenIn, { core: 0.62, pulse: 1.7, freq: 0.2, fadeA: 0.16, fadeB: 0.04 }));
+  const lenPinIn = new THREE.CatmullRomCurve3(pinIn, false, 'centripetal').getLength();
+  const lenPinOut = new THREE.CatmullRomCurve3(pinOut, false, 'centripetal').getLength();
+  const SEG = FIB_EXT > 0 ? 220 : 80;
+  // the light in the fiber: a quiet white core with every channel in it, each channel's pulses in its own color
+  const coreIn = new THREE.Mesh(tube(inPath, 0.02, SEG, 8), beamMaterial(mix, 0, lenIn, FANS
+    ? { core: 0.62, pulse: 1.7, freq: 0.2, fadeA: 0.16, fadeB: 0.04 } : { core: 0.34, pulse: 0, fadeA: 0.06, fadeB: 0.02, fibIn: true }));
   coreIn.userData = { tag: 'core' };
   g.add(coreIn); beams.push(coreIn);
   // the fiber's glass, faint beside its light
-  const cladIn = new THREE.Mesh(tube(inPath, 0.05, 80, 10), beamMaterial('#cfdaff', 0, lenIn, { core: 0.06, pulse: 0, fadeA: 0.35 }));
+  const cladIn = new THREE.Mesh(tube(inPath, 0.05, SEG, 10), beamMaterial('#cfdaff', 0, lenIn, { core: 0.06, pulse: 0, fadeA: FANS ? 0.35 : 0.1, fibIn: !FANS }));
   g.add(cladIn); beams.push(cladIn);
+  // In the fiber every channel travels together, so the light there is white. It moves in soft, full pulses: a
+  // bright body and a cool halo around it. Inside the device the same pulse crosses every lane at once.
+  const fiberPulses = (path, s0, len, ends) => {
+    if (FANS) return;
+    const halo = new THREE.Mesh(tube(path, 0.075, SEG, 12),
+      beamMaterial('#8fb8ff', s0, len, { core: 0, pulse: 0.75, freq: 0.2, rise: 0.08, pw: 0.2, seed: PULSE_SEED, ...ends }));
+    const body = new THREE.Mesh(tube(path, 0.024, SEG, 8),
+      beamMaterial('#f4f8ff', s0, len, { core: 0, pulse: 2.6, freq: 0.2, rise: 0.07, pw: 0.17, seed: PULSE_SEED, ...ends }));
+    for (const m of [halo, body]) { m.userData = { tag: 'core' }; g.add(m); beams.push(m); }
+  };
+  fiberPulses(inPath, 0, lenIn, { fadeA: 0.06, fadeB: 0.02, fibIn: true });
 
   // through the GRIN lens the rays bend into a parallel beam; here each channel gets its own lane
   const lane = (i, side) => {
@@ -2015,20 +2071,22 @@ function buildModel() {
   const sChip = lenIn + laneLen;
   for (let i = 0; i < LANES; i++) {
     const before = new THREE.Mesh(tube(lanesIn[i], 0.006 + 0.016 * GAIN[i], 40, 8),
-      beamMaterial(CH[i], lenIn, laneLen, { core: 0.85 * LEVEL_IN[i], pulse: 2.1 * LEVEL_IN[i], freq: 0.2, fadeA: 0.3, seed: 0.13 * i }));
+      beamMaterial(CH[i], lenIn, laneLen, { core: 0.85 * LEVEL_IN[i], pulse: 2.1 * LEVEL_IN[i], freq: 0.2, fadeA: 0.3, seed: FANS ? 0.13 * i : PULSE_SEED }));
     before.userData = { tag: 'lane' };
     g.add(before); beams.push(before);
     const after = new THREE.Mesh(tube(lanesOut[i], 0.011, 40, 8),
-      beamMaterial(CH[i], sChip + CHIP_T, laneLen, { core: 0.95 * LEVEL_OUT[i], pulse: 2.3 * LEVEL_OUT[i], freq: 0.2, fadeB: 0.3, seed: 0.13 * i }));
+      beamMaterial(CH[i], sChip + CHIP_T, laneLen, { core: 0.95 * LEVEL_OUT[i], pulse: 2.3 * LEVEL_OUT[i], freq: 0.2, fadeB: 0.3, seed: FANS ? 0.13 * i : PULSE_SEED }));
     after.userData = { tag: 'lane' };
     g.add(after); beams.push(after);
   }
   const sOut = sChip + CHIP_T + laneLen;
-  const coreOut = new THREE.Mesh(tube(outPath, 0.02, 80, 8), beamMaterial(mix, sOut, lenOut, { core: 0.62, pulse: 1.7, freq: 0.2, fadeA: 0.04, fadeB: 0.16 }));
+  const coreOut = new THREE.Mesh(tube(outPath, 0.02, SEG, 8), beamMaterial(mix, sOut, lenOut, FANS
+    ? { core: 0.62, pulse: 1.7, freq: 0.2, fadeA: 0.04, fadeB: 0.16 } : { core: 0.34, pulse: 0, fadeA: 0.02, fadeB: 0.06, fibOut: true }));
   coreOut.userData = { tag: 'core' };
   g.add(coreOut); beams.push(coreOut);
-  const cladOut = new THREE.Mesh(tube(outPath, 0.05, 80, 10), beamMaterial('#cfdaff', sOut, lenOut, { core: 0.06, pulse: 0, fadeB: 0.35 }));
+  const cladOut = new THREE.Mesh(tube(outPath, 0.05, SEG, 10), beamMaterial('#cfdaff', sOut, lenOut, { core: 0.06, pulse: 0, fadeB: FANS ? 0.35 : 0.1, fibOut: !FANS }));
   g.add(cladOut); beams.push(cladOut);
+  fiberPulses(outPath, sOut, lenOut, { fadeA: 0.02, fadeB: 0.06, fibOut: true });
 
   // incoming light: the channels as they come from the amplifier, uneven, converging on the fiber
   const E = inPath.getPoint(0);
@@ -2037,7 +2095,7 @@ function buildModel() {
   const perp = new THREE.Vector3().crossVectors(zAxis, d).normalize();
   const farIn = d.clone().lerp(V3(0.3, -1, 0).normalize(), 0.5).normalize();
   let sMin = 0;
-  for (let k = 0; k < LANES; k++) {
+  for (let k = 0; k < (FANS ? LANES : 0); k++) {
     for (let j = 0; j < 3; j++) {
       const ang = rand() * Math.PI * 2;
       const rad = Math.pow(rand(), 0.7) * 2.4 + 0.2;
@@ -2072,7 +2130,7 @@ function buildModel() {
   const fanDir = dOut.clone().lerp(V3(1, -0.5, 0).normalize(), 0.5).normalize();
   const sTrail = sOut + lenOut;
   let sMax = sTrail;
-  for (let k = 0; k < LANES; k++) {
+  for (let k = 0; k < (FANS ? LANES : 0); k++) {
     for (let j = 0; j < 3; j++) {
       const ang = rand() * Math.PI * 2;
       const rad = 0.3 + rand() * 1.7;
@@ -2099,6 +2157,9 @@ function buildModel() {
   return {
     group: g, beams, chip, chipParts: [chip, chipRim, ce], glowIn, glowOut, fanOut,
     sMin, sMax, sChip,
+    // the entrance starts where the visible pigtail starts and ends where it ends
+    sIntro0: FANS ? Math.max(sMin, -10) : lenIn - lenPinIn - 1.5,
+    sIntro1: FANS ? sMax + 2 : sOut + lenPinOut + 2,
   };
 }
 
@@ -2234,23 +2295,23 @@ const TAU = Math.PI * 2;
 const halfway = (a, b) => (a + b + TAU) / 2;
 const KEYS = {
   wide: [
-    { ax: 0.71, ay: 0.43, size: 0.52, yaw: -0.5, pitch: 0.2, roll: -0.52, aim: 0.55, trail: 1.0, reach: 1, reachIn: 0.42, core: 1.0, glass: 0.8, shadeL: 1, shadeR: 0, par: 1 },
-    { ax: 0.25, ay: 0.5, size: 0.68, yaw: Math.PI - 0.5, pitch: 0.14, roll: 1.42, aim: 0, trail: 0.34, reach: 0.3, reachIn: 0.35, core: 0.9, glass: 0.7, shadeL: 0, shadeR: 1, par: 0.7 },
-    { ax: 0.25, ay: 0.5, size: 0.68, yaw: Math.PI - 0.5, pitch: 0.14, roll: 1.42, aim: 0, trail: 0, reach: 0.4, reachIn: 1, core: 0, glass: 0.3, shadeL: 1, shadeR: 0, par: 0.15 },
+    { ax: 0.74, ay: 0.47, size: 0.56, yaw: Math.PI - 0.5, pitch: -0.2, roll: Math.PI + 0.52, aim: 1.9, trail: 1.0, reach: 1, reachIn: 0.42, core: 1.0, glass: 0.8, shadeL: 1, shadeR: 0, par: 1, fibIn: 1, fibOut: 1 },
+    { ax: 0.25, ay: 0.5, size: 0.72, yaw: Math.PI - 0.5, pitch: 0.14, roll: 1.42, aim: 0, trail: 0.34, reach: 0.3, reachIn: 0.35, core: 0.9, glass: 0.7, shadeL: 0, shadeR: 1, par: 0.7, fibIn: 1, fibOut: 1 },
+    { ax: 0.25, ay: 0.5, size: 0.72, yaw: Math.PI - 0.5, pitch: 0.14, roll: 1.42, aim: 0, trail: 0, reach: 0.4, reachIn: 1, core: 0, glass: 0.3, shadeL: 1, shadeR: 0, par: 0.15, fibIn: 1, fibOut: 1 },
   ],
   mid: [
-    { ax: 0.74, ay: 0.43, size: 0.47, yaw: -0.5, pitch: 0.2, roll: -0.52, aim: 0.55, trail: 1.0, reach: 1, reachIn: 0.42, core: 1.0, glass: 0.8, shadeL: 1, shadeR: 0, par: 1 },
-    { ax: 0.22, ay: 0.5, size: 0.6, yaw: Math.PI - 0.5, pitch: 0.14, roll: 1.42, aim: 0, trail: 0.34, reach: 0.3, reachIn: 0.35, core: 0.9, glass: 0.7, shadeL: 0, shadeR: 1, par: 0.7 },
-    { ax: 0.22, ay: 0.5, size: 0.6, yaw: Math.PI - 0.5, pitch: 0.14, roll: 1.42, aim: 0, trail: 0, reach: 0.4, reachIn: 1, core: 0, glass: 0.3, shadeL: 1, shadeR: 0, par: 0.15 },
+    { ax: 0.8, ay: 0.47, size: 0.48, yaw: Math.PI - 0.5, pitch: -0.2, roll: Math.PI + 0.52, aim: 1.9, trail: 1.0, reach: 1, reachIn: 0.42, core: 1.0, glass: 0.8, shadeL: 1, shadeR: 0, par: 1, fibIn: 1, fibOut: 1 },
+    { ax: 0.22, ay: 0.5, size: 0.64, yaw: Math.PI - 0.5, pitch: 0.14, roll: 1.42, aim: 0, trail: 0.34, reach: 0.3, reachIn: 0.35, core: 0.9, glass: 0.7, shadeL: 0, shadeR: 1, par: 0.7, fibIn: 1, fibOut: 1 },
+    { ax: 0.22, ay: 0.5, size: 0.64, yaw: Math.PI - 0.5, pitch: 0.14, roll: 1.42, aim: 0, trail: 0, reach: 0.4, reachIn: 1, core: 0, glass: 0.3, shadeL: 1, shadeR: 0, par: 0.15, fibIn: 1, fibOut: 1 },
   ],
   tall: [
-    { ax: 0.48, ay: 0.25, size: 0.3, yaw: -0.5, pitch: 0.2, roll: -0.52, aim: 0.55, trail: 0.85, reach: 1, reachIn: 0.5, core: 1.0, glass: 0.8, shadeL: 0, shadeR: 0, par: 0 },
-    { ax: 0.5, ay: 0.22, size: 0.31, yaw: Math.PI - 0.5, pitch: 0.12, roll: -0.14, aim: 0, trail: 0.4, reach: 0.6, reachIn: 0.45, core: 0.75, glass: 0.7, shadeL: 0, shadeR: 0, par: 0 },
-    { ax: 0.5, ay: 0.22, size: 0.31, yaw: Math.PI - 0.5, pitch: 0.12, roll: -0.14, aim: 0, trail: 0, reach: 0.6, reachIn: 0.45, core: 0, glass: 0.3, shadeL: 0, shadeR: 0, par: 0 },
+    { ax: 0.48, ay: 0.3, size: 0.3, yaw: -0.5, pitch: 0.2, roll: -0.52, aim: 0.55, trail: 0.85, reach: 1, reachIn: 0.5, core: 1.0, glass: 0.8, shadeL: 0, shadeR: 0, par: 0, fibIn: 1, fibOut: 0.34 },
+    { ax: 0.5, ay: 0.26, size: 0.31, yaw: Math.PI - 0.5, pitch: 0.12, roll: -0.14, aim: 0, trail: 0.4, reach: 0.6, reachIn: 0.45, core: 0.75, glass: 0.7, shadeL: 0, shadeR: 0, par: 0, fibIn: 1, fibOut: 1 },
+    { ax: 0.5, ay: 0.26, size: 0.31, yaw: Math.PI - 0.5, pitch: 0.12, roll: -0.14, aim: 0, trail: 0, reach: 0.6, reachIn: 0.45, core: 0, glass: 0.3, shadeL: 0, shadeR: 0, par: 0, fibIn: 1, fibOut: 1 },
   ],
 };
 // where the chip settles: centre (fraction of the view) and height (fraction of the view height)
-const CHIP_POSE = { wide: { cx: 0.71, cy: 0.52, cs: 0.3 }, mid: { cx: 0.745, cy: 0.52, cs: 0.24 }, tall: { cx: 0.5, cy: 0.32, cs: 0.19 } };
+const CHIP_POSE = { wide: { cx: 0.71, cy: 0.52, cs: 0.3 }, mid: { cx: 0.745, cy: 0.52, cs: 0.24 }, tall: { cx: 0.5, cy: 0.27, cs: 0.19 } };
 let chipPose = CHIP_POSE.wide;
 
 const sections = {
@@ -2266,6 +2327,12 @@ function measure() {
   const top = (el) => el.getBoundingClientRect().top + window.scrollY;
   const vh = (M.vh = window.innerHeight);
   M.why = Math.max(1, top(sections.why));
+  // phones: the device starts to turn while the first screen's last lines are still rising past it, and finishes
+  // just after the second screen's text has come to stand under it
+  const facts = document.querySelector('.hero-facts');
+  const factsEnd = facts ? facts.getBoundingClientRect().bottom + window.scrollY : 0;
+  M.turn1 = M.why + 0.12 * vh;
+  M.turn0 = Math.max(0, Math.min(factsEnd - 0.4 * vh, M.turn1 - 0.25 * vh));
   M.pinned = !!whyPin && getComputedStyle(whyPin).position === 'sticky';
   M.whyLen = Math.max(1, sections.why.offsetHeight - vh);
   const ct = top(sections.chip), ch = sections.chip.offsetHeight;
@@ -2285,9 +2352,9 @@ function measure() {
     M.b0 = M.z1 - 0.25 * vh; M.b1 = M.b0 + 0.45 * vh;
   } else {
     M.textAt = -Infinity;
-    // stacked, the chip sits above its text in a tall clear band: it appears in that band as the band comes up,
-    // opens and lights up while it passes, before the text scrolls over it
-    M.z0 = ct - 0.8 * vh; M.z1 = ct - 0.25 * vh;
+    // stacked, the chip sits above its text in a clear band and moves with it: it has its full size before the band
+    // comes on screen, then opens and lights up while it passes
+    M.z0 = ct - 1.15 * vh; M.z1 = ct - 0.8 * vh;
     M.e0 = ct - 0.25 * vh; M.e1 = ct + 0.1 * vh;
     M.b0 = ct - 0.3 * vh; M.b1 = ct + 0.1 * vh;
   }
@@ -2311,7 +2378,8 @@ function layoutTarget(y) {
   K = tallView ? KEYS.tall : aspect < 1.5 ? KEYS.mid : KEYS.wide;
   const stackedLook = !M.chipPinned && !tallView;
   chipPose = tallView || stackedLook ? CHIP_POSE.tall : K === KEYS.mid ? CHIP_POSE.mid : CHIP_POSE.wide;
-  const t = ease(clamp(y / M.why, 0, 1));
+  // on phones the turn gets going at once and settles at the end, so it is seen to start where it starts
+  const t = tallView ? 1 - Math.pow(1 - clamp((y - M.turn0) / Math.max(1, M.turn1 - M.turn0), 0, 1), 2.2) : ease(clamp(y / M.why, 0, 1));
   const o = {};
   for (const k in K[0]) o[k] = lerp(K[0][k], K[1][k], t);
   // the chip: it comes forward, opens into its layers, and the light goes through it
@@ -2333,6 +2401,10 @@ function layoutTarget(y) {
   o.lift = y > M.chipEnd ? y - M.chipEnd : 0; // follow the content once the sticky panel releases
   // stacked, the chip rides up with its band until the band reaches the top
   o.drop = M.chipPinned ? 0 : Math.max(0, M.ct - y);
+  // phones: once the second screen's text stands under the device, the device scrolls away with it
+  o.ride = tallView ? Math.max(0, y - M.why) : 0;
+  // stacked, the chip is never held: it moves with its band, coming up with it and leaving with its text
+  o.chipRide = M.chipPinned ? o.lift - o.drop : y - M.ct;
   return o;
 }
 
@@ -2566,6 +2638,10 @@ function resize() {
   renderer.setSize(w, h, false);
   composer.setPixelRatio(dpr);
   composer.setSize(w, h);
+  const hdr = document.querySelector('.site-header');
+  shared.uViewH.value = h * dpr;
+  shared.uTopCut.value = (hdr ? hdr.offsetHeight : 72) * 0.85 * dpr;
+  shared.uTopFade.value = 48 * dpr;
   camera.aspect = w / h;
   camera.updateProjectionMatrix();
   measure();
@@ -2620,7 +2696,7 @@ function frame(now) {
     if (!introStart) introStart = now;
     intro = Math.min(1, (now - introStart) / 2800);
     const t = 1 - Math.pow(1 - intro, 2.2); // light rushes in, then settles
-    shared.uFront.value = lerp(Math.max(model.sMin, -10), model.sMax + 2, t);
+    shared.uFront.value = lerp(model.sIntro0, model.sIntro1, t);
   } else {
     shared.uFront.value = 1e4;
   }
@@ -2631,7 +2707,7 @@ function frame(now) {
   for (const key in tgt) {
     if (!live[key]) live[key] = spring(tgt[key]);
     // VP.snap (set only by test tools) jumps straight to the target, so slow software renderers can be checked
-    if (key === 'lift' || key === 'drop' || VP.snap) { live[key].x = tgt[key]; live[key].v = 0; }
+    if (key === 'lift' || key === 'drop' || key === 'ride' || key === 'chipRide' || VP.snap) { live[key].x = tgt[key]; live[key].v = 0; }
     else stepSpring(live[key], tgt[key], dt, key === 'coat' || key === 'back' || key.startsWith('em') ? 0.55 : 0.7, 1);
   }
   const L = (key) => live[key].x;
@@ -2639,7 +2715,7 @@ function frame(now) {
   const vh = 2 * camera.position.z * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
   const vw = vh * camera.aspect;
   const scale = (L('size') * vh) / LB;
-  tilt.position.set((L('ax') - 0.5) * vw, (0.5 - L('ay')) * vh + (L('lift') / H) * vh, 0);
+  tilt.position.set((L('ax') - 0.5) * vw, (0.5 - L('ay')) * vh + ((L('lift') + L('ride')) / H) * vh, 0);
   tilt.scale.setScalar(scale);
 
   // rotation: keyframe pose + slow drift + pointer parallax + the visitor's drag
@@ -2689,6 +2765,7 @@ function frame(now) {
   shared.uMasterTrail.value = L('trail') * rest;
   shared.uReach.value = L('reach');
   shared.uReachIn.value = L('reachIn');
+  shared.uFibIn.value = L('fibIn'); shared.uFibOut.value = L('fibOut');
   shared.uMasterCore.value = L('core') * rest;
   glassPolished.envMapIntensity = L('glass');
   // the chip lights up once the light front has reached it
@@ -2708,7 +2785,7 @@ function frame(now) {
   else stepSpring(specS, state.spec === 'gff' ? 1 : 0, dt, 0.5, 1);
   em.coat = L('emCoat'); em.glass = L('emGlass'); em.ar = L('emAr');
   placeChipUp(zoom, L('coat'), L('back'), em, L('beam'), specS.x, vh, vw,
-    drag.yaw.x + drift + par.x.x * 0.25 * follow, drag.pitch.x + par.y.x * 0.1 * follow, L('lift') - L('drop'), fly);
+    drag.yaw.x + drift + par.x.x * 0.25 * follow, drag.pitch.x + par.y.x * 0.1 * follow, L('chipRide'), fly);
   // labels follow the steps: each part is named while its step is read, and the name goes when the next comes up
   const ps = typeof state.chipPs === 'number' ? state.chipPs : -1;
   const step = ps < 0 ? -1 : Math.min(2, Math.floor(ps));
