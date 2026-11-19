@@ -1,3 +1,24 @@
+@font-face {
+  font-family: Archivo;
+  src: url("fonts/archivo-latin.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Roboto Flex";
+  src: url("fonts/robotoflex-cyrillic.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 100 900;
+  font-stretch: 75% 125%;
+  font-display: swap;
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+:root { --font: Archivo, "Roboto Flex", "Helvetica Neue", Arial, sans-serif; }
+.micro, .badge, .corner-lnk { font-size: clamp(0.75rem, 0.72rem + 0.1vw, 0.8rem); font-stretch: 96%; letter-spacing: 0.12em; }
+.eyebrow .faint { color: #bdbdbd; }
+.partner-note { margin-top: 0.65rem; max-width: 44ch; color: var(--dim); }
 .continuation { padding-top: 0; }
 .contact-rule { height: 1px; background: var(--hair); margin-bottom: clamp(44px, 7vh, 84px); }
 .text-link { color: var(--light); text-decoration: underline; text-underline-offset: 0.18em; }
@@ -16,5 +37,8 @@
 .case-name { font-size: clamp(1.15rem, 1rem + 0.4vw, 1.5rem); line-height: 1.2; }
 .case figcaption p { color: var(--dim); }
 @media (max-width: 720px) {
+  .hero-row.bottom { flex-direction: row; justify-content: space-between; align-items: flex-end; gap: 12px; }
+  .hero-row.bottom .corner-lnk:first-child { flex-shrink: 0; }
+  .hero-row.bottom .corner-lnk:last-child { white-space: normal; text-align: right; text-wrap: balance; }
   .case-grid, .case-grid.sites { grid-template-columns: 1fr; gap: 2rem; }
 }
