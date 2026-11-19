@@ -1,0 +1,20 @@
+.continuation { padding-top: 0; }
+.contact-rule { height: 1px; background: var(--hair); margin-bottom: clamp(44px, 7vh, 84px); }
+.text-link { color: var(--light); text-decoration: underline; text-underline-offset: 0.18em; }
+.group-title { margin-bottom: 1rem; font-size: var(--t-say); }
+.case-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(20px, 3vw, 44px); }
+.case-grid.sites { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.case-grid + .group-title { margin-top: clamp(48px, 9vh, 88px); }
+.case { margin: 0; }
+.case-video, .case-player { display: block; position: relative; width: 100%; aspect-ratio: 16 / 10; border: 1px solid var(--hair); background: var(--void); }
+.case-video img { width: 100%; height: 100%; object-fit: contain; }
+.case-video::before, .case-video::after { position: absolute; inset: 50% auto auto 50%; transform: translate(-50%, -50%); content: ""; }
+.case-video::before { width: 3rem; height: 3rem; background: rgba(0,0,0,.78); border: 1px solid rgba(255,255,255,.7); border-radius: 50%; }
+.case-video::after { width: 0; height: 0; margin-left: 0.12rem; border-block: 0.38rem solid transparent; border-left: 0.62rem solid white; }
+.case-video:hover::before, .case-video:focus-visible::before { background: black; border-color: white; }
+.case figcaption { margin-top: 0.8rem; }
+.case-name { font-size: clamp(1.15rem, 1rem + 0.4vw, 1.5rem); line-height: 1.2; }
+.case figcaption p { color: var(--dim); }
+@media (max-width: 720px) {
+  .case-grid, .case-grid.sites { grid-template-columns: 1fr; gap: 2rem; }
+}
