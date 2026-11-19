@@ -1,0 +1,94 @@
+.article-nav,
+.article-figma {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.article-nav {
+  min-height: 4.5rem;
+  padding-block: 1rem;
+  border-bottom: 1px solid var(--hair);
+}
+
+.article-brand { font-family: var(--display-font); font-weight: 700; }
+
+.case-article { padding-bottom: clamp(4rem, 8vw, 8rem); }
+
+.article-heading {
+  max-width: 72rem;
+  margin-block: clamp(3rem, 6vw, 6rem) clamp(1.75rem, 4vw, 4rem);
+}
+
+.article-heading .micro { color: #aaa; }
+
+.article-heading h1 {
+  margin-block: .18em .15em;
+  font-family: var(--display-font);
+  font-size: clamp(1.85rem, 5.35vw, 5.5rem);
+  line-height: 1.06;
+}
+
+.article-lead {
+  max-width: 36ch;
+  color: #c7c7c7;
+  font-size: clamp(1.2rem, 2.4vw, 2.25rem);
+  line-height: 1.24;
+}
+
+.article-cover { width: 100%; height: auto; }
+
+.article-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(.75rem, 1.4vw, 1.5rem);
+  margin-top: clamp(1.5rem, 4vw, 4rem);
+}
+
+.article-card {
+  padding: clamp(1.25rem, 3.4vw, 3.25rem);
+  color: #efefef;
+  background: #151515;
+  border: 1px solid var(--hair-soft);
+}
+
+.article-card h2 {
+  margin-bottom: .65em;
+  font-size: clamp(1.5rem, 2.6vw, 2.75rem);
+  line-height: 1.13;
+}
+
+.article-card p {
+  max-width: 55ch;
+  color: #cecece;
+  font-size: clamp(1rem, 1.35vw, 1.25rem);
+  line-height: 1.5;
+}
+
+.article-result {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: minmax(0, 1.7fr) minmax(12rem, 1fr);
+  align-items: center;
+  gap: clamp(2rem, 6vw, 6rem);
+}
+
+.delivery-screen { justify-self: center; margin: 0; text-align: center; }
+.delivery-screen img { width: clamp(10.5rem, 18vw, 16.5rem); border-radius: 1.25rem; }
+.delivery-screen figcaption { margin-top: .65rem; color: #aaa; font-size: .875rem; }
+
+.article-figma {
+  margin-top: clamp(1.5rem, 3vw, 3rem);
+  border-block: 1px solid var(--hair);
+  padding: 1.15em 0;
+  font-size: clamp(1.3rem, 2.3vw, 2.2rem);
+  line-height: 1.2;
+}
+
+.article-figma:hover,
+.article-figma:focus-visible { text-decoration: underline; text-underline-offset: .16em; }
+
+@media (max-width: 700px) {
+  .article-cards, .article-result { grid-template-columns: 1fr; }
+}
