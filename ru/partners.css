@@ -1,35 +1,23 @@
 @font-face {
-  font-family: "RF Dewi Extended";
-  src: url("fonts/rf-dewi-extended-regular.woff2") format("woff2");
+  font-family: Archivo;
+  src: url("fonts/archivo-latin.woff2") format("woff2");
   font-style: normal;
-  font-weight: 400;
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
   font-display: swap;
 }
 @font-face {
-  font-family: "RF Dewi Extended";
-  src: url("fonts/rf-dewi-extended-semibold.woff2") format("woff2");
+  font-family: "Roboto Flex";
+  src: url("fonts/robotoflex-cyrillic.woff2") format("woff2");
   font-style: normal;
-  font-weight: 600;
+  font-weight: 100 900;
+  font-stretch: 75% 125%;
   font-display: swap;
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
 }
-@font-face {
-  font-family: "RF Dewi Expanded";
-  src: url("fonts/rf-dewi-expanded-regular.woff2") format("woff2");
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-}
-@font-face {
-  font-family: "RF Dewi Expanded";
-  src: url("fonts/rf-dewi-expanded-bold.woff2") format("woff2");
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-}
-
 :root {
-  --font: "RF Dewi Extended", Arial, sans-serif;
-  --display-font: "RF Dewi Expanded", "RF Dewi Extended", Arial, sans-serif;
+  --font: Archivo, "Roboto Flex", "Helvetica Neue", Arial, sans-serif;
+  --display-font: var(--font);
   --dim: #adadad;
   --faint: #999;
   --gl: max(clamp(20px, 3.2vw, 48px), env(safe-area-inset-left, 0px));
@@ -40,15 +28,10 @@ body { font-synthesis: none; }
 button { font: inherit; }
 .micro, .badge, .corner-lnk {
   font-size: clamp(.75rem, .72rem + .1vw, .82rem);
-  font-weight: 600;
-  font-stretch: normal;
+  font-stretch: 96%;
   letter-spacing: normal;
 }
-.mark, .fig-n, .claim h3 {
-  font-stretch: normal;
-  letter-spacing: normal;
-}
-.mark, .fig-n { font-family: var(--display-font); font-weight: 400; }
+.mark, .fig-n, .claim h3 { letter-spacing: normal; }
 .mark span:last-child { margin-right: 0; }
 .eyebrow .faint { color: #bdbdbd; }
 .continuation { padding-top: 0; }
@@ -87,7 +70,6 @@ button { font: inherit; }
   gap: clamp(18px, 2.4vw, 38px);
   padding-block: 6px;
 }
-.who-name { font-stretch: normal; font-weight: 600; }
 .who-role { color: var(--dim); font-size: .85rem; }
 .contact-icons { display: flex; align-items: center; gap: 6px; flex: none; }
 .telegram-icon, .founder-avatar {
